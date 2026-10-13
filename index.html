@@ -4,237 +4,384 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make Your Own HA · Renellence at the Vic Park Medispa Convention</title>
-<meta name="description" content="Step away from the convention floor for fifteen minutes and mix a hyaluronic serum to your own recipe with the Renellence team. Limited spots.">
+<meta name="description" content="Step away from the convention floor for fifteen minutes and mix a hyaluronic serum to your own recipe with the Renellence team. Limited seats.">
+<meta name="theme-color" content="#f6f1ea">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <!--
-  Vic Park HA Lab - "Make Your Own HA" sign-up page (Yousef 2026-10-13). Built from the Claude Design file
-  "Make Your Own HA.dc.html" as plain HTML: same layout, words and colours, no design runtime.
-  The form posts to n8n ("[REG] Liberty Grand RSVP", webhook vic-park-ha-lab), which writes a row to the
-  Google Sheet "Vic Park HA Lab Registrations". The webhook only accepts this site's address.
+  Vic Park HA Lab - "Make Your Own HA" sign-up page (Yousef 2026-10-13). Redesigned the same day ("make it more
+  premium"); the words are the Claude Design file's. Every Vic Park location is listed (30, by province).
+  The form posts to n8n ("[REG] Liberty Grand RSVP", webhook vic-park-ha-lab), which writes a row to the Google
+  Sheet "Vic Park HA Lab Registrations". The webhook only accepts this site's address.
 -->
 <style>
   *{box-sizing:border-box}
-  :root{--ink:#2b211c;--paper:#f7f2ec;--card:#fffdfa;--line:#e6dcd2;--field:#f9f5f0;--fieldline:#ddd0c4;--accent:#8a5a44;--muted:#7a6a5f;--muted2:#8a7466;--body:#5c4d43;--err:#a6452f}
+  :root{
+    --ivory:#f6f1ea; --ivory-2:#efe7dd; --card:rgba(255,253,250,.82); --ink:#231a15; --ink-2:#3a2e27;
+    --bronze:#9a6b4f; --champagne:#c9a98c; --line:rgba(35,26,21,.12); --line-2:rgba(35,26,21,.22);
+    --body:#5b4d44; --muted:#8a7a6e; --err:#a3412b;
+    --serif:'Cormorant Garamond',Georgia,serif; --sans:'Manrope',system-ui,sans-serif;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{color:var(--ink)}
-  input::placeholder{color:#a8988c}
-  select:focus,input:focus{outline:none;border-color:var(--accent) !important;background:var(--card) !important}
-  button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .serif{font-family:'Cormorant Garamond',serif}
-  .eyebrow{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
-  .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-  .field{width:100%;font-family:'Manrope',sans-serif;font-size:15px;color:var(--ink);padding:14px;border:1px solid var(--fieldline);background:var(--field);border-radius:0}
-  .err{font-size:12px;color:var(--err)}
+  body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  /* A faint paper grain over everything. */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.35;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .38  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .wrap{max-width:1360px;margin:0 auto;padding:0 clamp(22px,5vw,72px)}
+  .serif{font-family:var(--serif)}
+  .kicker{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--bronze);font-weight:500}
+  .rule{display:block;width:44px;height:1px;background:var(--champagne)}
+  :focus-visible{outline:1.5px solid var(--bronze);outline-offset:3px}
+
+  /* header */
+  header{position:relative;z-index:5}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:30px;padding-bottom:30px}
+  .bar img{height:15px;width:auto}
+  .bar .event{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .bar a.cta{font-size:11px;letter-spacing:.24em;text-transform:uppercase;padding:12px 20px;border:1px solid var(--line-2);transition:all .35s var(--ease)}
+  .bar a.cta:hover{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+  @media (max-width:820px){ .bar .event{display:none} }
+
+  /* hero */
+  .hero{position:relative;padding:clamp(28px,5vw,72px) 0 clamp(72px,9vw,140px)}
+  .orb{position:absolute;pointer-events:none;border-radius:50%;filter:blur(2px)}
+  .orb.one{width:min(62vw,820px);aspect-ratio:1;right:-14vw;top:-120px;
+    background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.95) 0,rgba(255,250,244,.6) 18%,rgba(214,186,160,.35) 46%,rgba(201,169,140,.12) 64%,transparent 72%)}
+  .orb.two{width:260px;aspect-ratio:1;left:-90px;bottom:40px;background:radial-gradient(circle,rgba(201,169,140,.22),transparent 68%)}
+  .ring{position:absolute;pointer-events:none;width:min(46vw,600px);aspect-ratio:1;right:-4vw;top:-30px;border:1px solid rgba(154,107,79,.14);border-radius:50%}
+  .hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(40px,6vw,110px);align-items:start}
+  @media (max-width:960px){ .hero-grid{grid-template-columns:1fr} }
+  .hero-copy{padding-top:clamp(8px,4vw,64px);display:flex;flex-direction:column;gap:30px}
+  .hero h1{margin:0;font-family:var(--serif);font-weight:300;font-size:clamp(64px,9.4vw,148px);line-height:.86;letter-spacing:-.025em}
+  .hero h1 em{font-style:italic;font-weight:300;color:var(--bronze)}
+  .hero h1 .ha{display:inline-block;margin-left:.04em}
+  .lede{margin:0;max-width:470px;font-size:17px;line-height:1.75;color:var(--body);font-weight:300}
+  .facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:0;margin-top:6px;border-top:1px solid var(--line)}
+  .facts div{padding:22px 34px 0 0;margin-right:34px;border-right:1px solid var(--line)}
+  .facts div:last-child{border-right:0;margin-right:0}
+  .facts b{display:block;font-family:var(--serif);font-weight:400;font-size:32px;line-height:1;letter-spacing:-.01em}
+  .facts span{display:block;margin-top:8px;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+  @media (max-width:520px){ .facts div{padding-right:18px;margin-right:18px} .facts b{font-size:26px} }
+
+  /* the card */
+  .card{position:relative;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);
+    box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 50px 90px -50px rgba(58,40,28,.45),0 10px 30px -18px rgba(58,40,28,.18);padding:clamp(30px,4vw,54px);scroll-margin-top:28px}
+  .card::before{content:"";position:absolute;left:clamp(30px,4vw,54px);right:clamp(30px,4vw,54px);top:0;height:1px;background:linear-gradient(90deg,transparent,var(--champagne),transparent)}
+  .card h2{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.2vw,44px);line-height:1.05;letter-spacing:-.01em}
+  .card .sub{margin:10px 0 0;font-size:13.5px;color:var(--muted);font-weight:300}
+  form{display:flex;flex-direction:column;gap:30px;margin-top:34px}
+  .lbl{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500}
+  .line{width:100%;border:0;border-bottom:1px solid var(--line-2);background:transparent;padding:10px 0 12px;font:inherit;font-size:16px;color:var(--ink);font-weight:400;border-radius:0;transition:border-color .3s var(--ease)}
+  .line::placeholder{color:#b3a497;font-weight:300}
+  .line:focus{outline:none;border-bottom-color:var(--bronze)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:26px 30px}
+  @media (max-width:520px){ .row2{grid-template-columns:1fr} }
+  .err{display:block;margin-top:8px;font-size:12px;color:var(--err)}
   .err:empty{display:none}
-  .role{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--fieldline);background:var(--field);color:var(--ink);font-family:'Manrope',sans-serif;font-size:14px;cursor:pointer;text-align:left;transition:all .2s}
-  .role .dot{width:14px;height:14px;border-radius:50%;border:1px solid #b8a798;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .role .dot i{width:6px;height:6px;border-radius:50%;background:transparent}
-  .role[aria-checked="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .role[aria-checked="true"] .dot{border-color:#d4b29c}
-  .role[aria-checked="true"] .dot i{background:#d4b29c}
-  .btn{padding:18px 24px;background:var(--ink);color:var(--paper);border:none;font-family:'Manrope',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .2s}
-  .btn:hover{background:var(--accent);color:var(--paper)}
+
+  /* clinic picker */
+  .combo{position:relative}
+  .combo-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;cursor:pointer}
+  .combo-btn .ph{color:#b3a497;font-weight:300}
+  .combo-btn svg{flex:none;width:14px;height:14px;color:var(--bronze);transition:transform .3s var(--ease)}
+  .combo[data-open="true"] .combo-btn svg{transform:rotate(180deg)}
+  .combo-pop{position:absolute;z-index:30;left:-14px;right:-14px;top:calc(100% + 8px);background:#fffdfa;border:1px solid var(--line);
+    box-shadow:0 30px 60px -30px rgba(58,40,28,.4);padding:10px 0 6px;transform-origin:top;animation:pop .22s var(--ease)}
+  @keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .combo-search{margin:0 14px 6px;width:calc(100% - 28px)}
+  .combo-list{list-style:none;margin:0;padding:0;max-height:330px;overflow-y:auto;scrollbar-width:thin}
+  .combo-list .grp{padding:14px 14px 6px;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze);font-weight:600}
+  .combo-list [role="option"]{padding:10px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;border-left:2px solid transparent}
+  .combo-list [role="option"] b{font-weight:500;font-size:14.5px}
+  .combo-list [role="option"] small{font-size:12px;color:var(--muted);font-weight:300}
+  .combo-list [role="option"][aria-selected="true"]{border-left-color:var(--bronze)}
+  .combo-list [role="option"].active{background:var(--ivory-2)}
+  .combo-list .none{padding:14px;font-size:13px;color:var(--muted)}
+  .picked{display:block;margin-top:10px;font-size:12.5px;color:var(--muted);font-weight:300}
+  .picked:empty{display:none}
+
+  /* roles */
+  .roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .role{padding:12px 14px;border:1px solid var(--line-2);background:transparent;color:var(--ink);font:inherit;font-size:13.5px;letter-spacing:.02em;cursor:pointer;border-radius:999px;transition:all .3s var(--ease)}
+  .role:hover{border-color:var(--bronze)}
+  .role[aria-checked="true"]{background:var(--ink);border-color:var(--ink);color:var(--ivory)}
+
+  /* button */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:20px 30px;background:var(--ink);color:var(--ivory);border:0;font:inherit;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:background .35s var(--ease),gap .35s var(--ease)}
+  .btn svg{width:18px;height:10px}
+  .btn:hover{background:var(--bronze);gap:20px}
   .btn[disabled]{opacity:.6;cursor:wait}
+  .fine{margin:-12px 0 0;font-size:11.5px;color:var(--muted);font-weight:300;text-align:center}
   .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
-  @media (max-width:760px){ .sticky{position:static !important} }
+
+  /* done */
+  .done{text-align:center;padding:30px 0 10px;display:flex;flex-direction:column;align-items:center;gap:22px}
+  .done[hidden]{display:none}
+  .seal{width:72px;height:72px;border-radius:50%;border:1px solid var(--champagne);display:grid;place-items:center;position:relative}
+  .seal::after{content:"";position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(201,169,140,.4)}
+  .seal svg{width:24px;height:24px;color:var(--bronze)}
+  .done h2 em{color:var(--bronze)}
+  .done p{margin:0;max-width:360px;font-size:15px;line-height:1.7;color:var(--body);font-weight:300}
+  .link{background:none;border:0;padding:0 0 4px;font:inherit;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--bronze);border-bottom:1px solid currentColor;cursor:pointer}
+
+  /* dark ritual band */
+  .ritual{position:relative;background:var(--ink);color:#efe5da;padding:clamp(90px,11vw,170px) 0;overflow:hidden}
+  .ritual::before{content:"";position:absolute;width:900px;aspect-ratio:1;left:-300px;top:-420px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,140,.16),transparent 65%)}
+  .ritual-head{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:end}
+  @media (max-width:860px){ .ritual-head{grid-template-columns:1fr} }
+  .ritual h2{margin:0;font-family:var(--serif);font-weight:300;font-size:clamp(46px,6vw,88px);line-height:.95;letter-spacing:-.02em}
+  .ritual h2 em{font-style:italic;color:var(--champagne)}
+  .ritual-head p{margin:0;font-size:16px;line-height:1.8;color:#bfb0a3;font-weight:300;max-width:420px}
+  .pillars{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(60px,8vw,110px);border-top:1px solid rgba(239,229,218,.14)}
+  @media (max-width:860px){ .pillars{grid-template-columns:1fr} }
+  .pillar{padding:40px 36px 10px 0;margin-right:36px;border-right:1px solid rgba(239,229,218,.14)}
+  .pillar:last-child{border-right:0}
+  @media (max-width:860px){ .pillar{border-right:0;border-bottom:1px solid rgba(239,229,218,.14);padding:32px 0;margin-right:0} .pillar:last-child{border-bottom:0} }
+  .pillar i{display:block;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--champagne);margin-bottom:20px}
+  .pillar h3{margin:0 0 12px;font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.005em}
+  .pillar p{margin:0;font-size:15px;line-height:1.75;color:#bfb0a3;font-weight:300}
+
+  /* steps */
+  .steps{padding:clamp(90px,11vw,170px) 0}
+  .steps-head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
+  .steps h2{margin:14px 0 0;font-family:var(--serif);font-weight:300;font-size:clamp(46px,6vw,88px);line-height:.95;letter-spacing:-.02em}
+  .steps h2 em{font-style:italic;color:var(--bronze)}
+  .step-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,60px);margin-top:clamp(56px,7vw,96px)}
+  @media (max-width:860px){ .step-grid{grid-template-columns:1fr} }
+  .step{border-top:1px solid var(--ink);padding-top:28px}
+  .step .num{font-family:var(--serif);font-style:italic;font-weight:300;font-size:64px;line-height:.8;color:var(--champagne)}
+  .step h3{margin:26px 0 12px;font-size:15px;font-weight:600;letter-spacing:.04em}
+  .step p{margin:0;font-size:15px;line-height:1.75;color:var(--body);font-weight:300}
+
+  footer{border-top:1px solid var(--line)}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-top:34px;padding-bottom:34px;font-size:11px;letter-spacing:.14em;color:var(--muted)}
+  .foot img{height:12px;width:auto;opacity:.8}
+
+  /* gentle entrance */
+  .rise{opacity:0;transform:translateY(18px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  .rise.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){ .rise{opacity:1;transform:none;transition:none} html{scroll-behavior:auto} .combo-pop{animation:none} }
 </style>
 </head>
 <body>
-<div style="min-height:100vh;display:flex;flex-direction:column">
-  <header style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px clamp(20px,5vw,72px);border-bottom:1px solid var(--line);flex-wrap:wrap">
-    <div style="display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap">
-      <span class="serif" style="font-size:26px;letter-spacing:.02em;white-space:nowrap">Renellence</span>
-      <span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2)">Make Your Own HA · at the Vic Park Medispa Convention</span>
-    </div>
-    <a href="#register" style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:3px">Reserve a spot</a>
-  </header>
+<header>
+  <div class="wrap bar">
+    <img src="/assets/logo-ink.png" alt="Renellence" width="1400" height="194">
+    <span class="event">Vic Park Medispa Convention</span>
+    <a href="#register" class="cta">Reserve a seat</a>
+  </div>
+</header>
 
-  <main>
-  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(32px,5vw,96px);padding:clamp(40px,6vw,96px) clamp(20px,5vw,72px);align-items:start;max-width:1440px;width:100%;margin:0 auto">
-    <div class="sticky" style="display:flex;flex-direction:column;gap:32px;padding-top:clamp(0px,3vw,48px);position:sticky;top:40px">
-      <span class="eyebrow">Renellence at the Vic Park Medispa Convention · Limited spots</span>
-      <h1 class="serif" style="margin:0;font-weight:400;font-size:clamp(52px,7vw,112px);line-height:.95;letter-spacing:-.015em;text-wrap:balance">Make your<br><em style="font-style:italic;color:var(--accent)">own</em> HA.</h1>
-      <p style="margin:0;max-width:460px;font-size:17px;line-height:1.65;color:var(--body);text-wrap:pretty">Step away from the convention floor for fifteen minutes. Pull up a stool, mix a hyaluronic serum to your own recipe, and take it home — with the Renellence team beside you.</p>
-      <div style="display:flex;gap:28px;flex-wrap:wrap;padding-top:28px;border-top:1px solid var(--line);max-width:460px">
-        <div style="display:flex;flex-direction:column;gap:4px"><span class="serif" style="font-size:30px;line-height:1">15 min</span><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Per session</span></div>
-        <div style="display:flex;flex-direction:column;gap:4px"><span class="serif" style="font-size:30px;line-height:1">Yours</span><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">To take home</span></div>
+<main>
+  <section class="hero">
+    <span class="orb one" aria-hidden="true"></span><span class="ring" aria-hidden="true"></span><span class="orb two" aria-hidden="true"></span>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="kicker rise">Renellence at the Vic Park Medispa Convention</span>
+        <h1 class="rise">Make your<br><em>own</em> <span class="ha">HA.</span></h1>
+        <p class="lede rise">Step away from the convention floor for fifteen minutes. Pull up a stool, mix a hyaluronic serum to your own recipe, and take it home — with the Renellence team beside you.</p>
+        <div class="facts rise">
+          <div><b>15 min</b><span>Per session</span></div>
+          <div><b>Yours</b><span>To take home</span></div>
+          <div><b>Limited</b><span>Seats per session</span></div>
+        </div>
       </div>
-    </div>
 
-    <div id="register" style="background:var(--card);border:1px solid var(--line);padding:clamp(28px,4vw,48px);box-shadow:0 30px 60px -40px rgba(60,40,30,.35);scroll-margin-top:24px">
-      <form id="form" novalidate style="display:flex;flex-direction:column;gap:26px">
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <h2 class="serif" style="margin:0;font-weight:400;font-size:36px;line-height:1.1">Save your seat</h2>
-          <p style="margin:0;font-size:14px;color:var(--muted);line-height:1.5">Takes under a minute. We'll email your time slot.</p>
+      <div class="card rise" id="register">
+        <div id="formWrap">
+          <h2>Save your seat</h2>
+          <p class="sub">Takes under a minute. We'll email your time slot.</p>
+          <form id="form" novalidate>
+            <div>
+              <span class="lbl" id="clinicLbl">Your clinic location</span>
+              <div class="combo" id="combo" data-open="false">
+                <button type="button" class="combo-btn line" id="comboBtn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="clinicLbl comboBtn">
+                  <span id="comboText" class="ph">Select your clinic</span>
+                  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M2.5 5l4.5 4.5L11.5 5"/></svg>
+                </button>
+                <div class="combo-pop" id="comboPop" hidden>
+                  <input class="line combo-search" id="comboSearch" type="text" placeholder="Search by city or clinic" autocomplete="off" aria-label="Search clinics" aria-controls="comboList">
+                  <ul class="combo-list" id="comboList" role="listbox" aria-labelledby="clinicLbl"></ul>
+                </div>
+              </div>
+              <span class="picked" id="picked"></span>
+              <span class="err" id="err-location"></span>
+            </div>
+
+            <div>
+              <span class="lbl" id="roleLbl">Your role</span>
+              <div class="roles" role="radiogroup" aria-labelledby="roleLbl" id="roles"></div>
+              <span class="err" id="err-role"></span>
+            </div>
+
+            <div class="row2">
+              <label><span class="lbl">First name</span><input id="first" class="line" autocomplete="given-name" maxlength="80"><span class="err" id="err-first"></span></label>
+              <label><span class="lbl">Last name</span><input id="last" class="line" autocomplete="family-name" maxlength="80"><span class="err" id="err-last"></span></label>
+              <label><span class="lbl">Email</span><input id="email" type="email" class="line" autocomplete="email" placeholder="you@clinic.com" maxlength="160"><span class="err" id="err-email"></span></label>
+              <label><span class="lbl">Phone</span><input id="phone" type="tel" class="line" autocomplete="tel" placeholder="555.555.5555" maxlength="30"><span class="err" id="err-phone"></span></label>
+            </div>
+
+            <!-- Left empty by people; bots fill it in. -->
+            <div class="hp" aria-hidden="true"><label>Company website <input id="company_website" tabindex="-1" autocomplete="off"></label></div>
+
+            <span class="err" id="err-form" role="alert"></span>
+            <button type="submit" class="btn" id="submit"><span id="submitText">Reserve my seat</span><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+            <p class="fine">Seats are limited per session.</p>
+          </form>
         </div>
 
-        <label style="display:flex;flex-direction:column;gap:8px">
-          <span class="lbl">Your clinic location</span>
-          <div style="position:relative">
-            <select id="location" class="field" style="appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer">
-              <option value="">Select a clinic…</option>
-            </select>
-            <span aria-hidden="true" style="position:absolute;right:16px;top:50%;transform:translateY(-60%) rotate(45deg);width:7px;height:7px;border-right:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);pointer-events:none"></span>
-          </div>
-          <span id="locInfo" style="font-size:13px;color:var(--muted2)"></span>
-          <span class="err" id="err-location"></span>
-        </label>
-
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <span class="lbl" id="roleLbl">Your role</span>
-          <div role="radiogroup" aria-labelledby="roleLbl" id="roles" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px"></div>
-          <span class="err" id="err-role"></span>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
-          <label style="display:flex;flex-direction:column;gap:8px">
-            <span class="lbl">First name</span>
-            <input id="first" class="field" autocomplete="given-name" maxlength="80">
-            <span class="err" id="err-first"></span>
-          </label>
-          <label style="display:flex;flex-direction:column;gap:8px">
-            <span class="lbl">Last name</span>
-            <input id="last" class="field" autocomplete="family-name" maxlength="80">
-            <span class="err" id="err-last"></span>
-          </label>
-          <label style="display:flex;flex-direction:column;gap:8px">
-            <span class="lbl">Email</span>
-            <input id="email" type="email" class="field" autocomplete="email" placeholder="you@clinic.com" maxlength="160">
-            <span class="err" id="err-email"></span>
-          </label>
-          <label style="display:flex;flex-direction:column;gap:8px">
-            <span class="lbl">Phone</span>
-            <input id="phone" type="tel" class="field" autocomplete="tel" placeholder="555.555.5555" maxlength="30">
-            <span class="err" id="err-phone"></span>
-          </label>
-        </div>
-
-        <!-- Left empty by people; bots fill it in. -->
-        <div class="hp" aria-hidden="true"><label>Company website <input id="company_website" tabindex="-1" autocomplete="off"></label></div>
-
-        <span class="err" id="err-form" role="alert"></span>
-        <button type="submit" class="btn" id="submit" style="margin-top:4px">Reserve my spot</button>
-      </form>
-
-      <div id="done" hidden style="display:flex;flex-direction:column;gap:20px;padding:24px 0;text-align:center;align-items:center">
-        <span class="serif" style="width:56px;height:56px;border-radius:50%;border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--accent)">✓</span>
-        <h2 class="serif" style="margin:0;font-weight:400;font-size:40px;line-height:1.1">See you there, <em style="color:var(--accent)" id="doneFirst"></em>.</h2>
-        <p style="margin:0;max-width:340px;font-size:15px;line-height:1.6;color:var(--body)">Your spot is held under <span id="doneLoc"></span>. We'll send your time slot to <span id="doneEmail"></span>.</p>
-        <button type="button" id="again" style="background:none;border:none;font-family:'Manrope',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);cursor:pointer;border-bottom:1px solid currentColor;padding:0 0 3px">Register someone else</button>
-      </div>
-    </div>
-  </section>
-
-  <section style="background:var(--ink);color:#f2e9e0;padding:clamp(64px,9vw,128px) clamp(20px,5vw,72px)">
-    <div style="max-width:1296px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:32px;align-items:end">
-        <h2 class="serif" style="margin:0;font-weight:400;font-size:clamp(40px,5vw,64px);line-height:1;text-wrap:balance">A small ritual in a <em style="color:#d4b29c">busy</em> day.</h2>
-        <p style="margin:0;font-size:16px;line-height:1.65;color:#c9bbb0;max-width:440px">No slides, no sales pitch. Just a quiet table, good ingredients, and a few minutes to make something that's yours.</p>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1px;background:#4a3c33">
-        <div style="background:var(--ink);padding:32px 28px 32px 0;display:flex;flex-direction:column;gap:14px">
-          <h3 class="serif" style="margin:0;font-weight:500;font-size:26px">Fifteen minutes</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:#c9bbb0">Fits between sessions. Drop in, mix, and you're back on the floor.</p>
-        </div>
-        <div style="background:var(--ink);padding:32px 28px;display:flex;flex-direction:column;gap:14px">
-          <h3 class="serif" style="margin:0;font-weight:500;font-size:26px">Your recipe</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:#c9bbb0">Choose your base, weight and finish — guided by our clinicians.</p>
-        </div>
-        <div style="background:var(--ink);padding:32px 28px;display:flex;flex-direction:column;gap:14px">
-          <h3 class="serif" style="margin:0;font-weight:500;font-size:26px">Take it home</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:#c9bbb0">Leave with a finished, labelled bottle made by your own hand.</p>
+        <div class="done" id="done" hidden>
+          <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <h2>See you there, <em id="doneFirst"></em>.</h2>
+          <p>Your seat is held under <span id="doneLoc"></span>. We'll send your time slot to <span id="doneEmail"></span>.</p>
+          <button type="button" class="link" id="again">Register someone else</button>
         </div>
       </div>
     </div>
   </section>
 
-  <section style="padding:clamp(64px,9vw,128px) clamp(20px,5vw,72px)">
-    <div style="max-width:1296px;margin:0 auto;display:flex;flex-direction:column;gap:56px">
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <span class="eyebrow">How it works</span>
-        <h2 class="serif" style="margin:0;font-weight:400;font-size:clamp(40px,5vw,64px);line-height:1">Three easy steps.</h2>
+  <section class="ritual">
+    <div class="wrap">
+      <div class="ritual-head">
+        <h2 class="rise">A small ritual<br>in a <em>busy</em> day.</h2>
+        <p class="rise">No slides, no sales pitch. Just a quiet table, good ingredients, and a few minutes to make something that's yours.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:clamp(24px,4vw,48px)">
-        <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--ink);padding-top:24px">
-          <span class="serif" style="font-style:italic;font-size:44px;color:var(--accent);line-height:1">01</span>
-          <h3 style="margin:0;font-size:17px;font-weight:600">Reserve your spot</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--body)">Pick your clinic and role above. Seats are limited per session.</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--ink);padding-top:24px">
-          <span class="serif" style="font-style:italic;font-size:44px;color:var(--accent);line-height:1">02</span>
-          <h3 style="margin:0;font-size:17px;font-weight:600">Get your time slot</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--body)">We'll email a time and where to find the Renellence booth at the convention.</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--ink);padding-top:24px">
-          <span class="serif" style="font-style:italic;font-size:44px;color:var(--accent);line-height:1">03</span>
-          <h3 style="margin:0;font-size:17px;font-weight:600">Mix &amp; take home</h3>
-          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--body)">Stop by the bar, make your HA, and leave with your bottle.</p>
-        </div>
+      <div class="pillars">
+        <div class="pillar rise"><i>i.</i><h3>Fifteen minutes</h3><p>Fits between sessions. Drop in, mix, and you're back on the floor.</p></div>
+        <div class="pillar rise"><i>ii.</i><h3>Your recipe</h3><p>Choose your base, weight and finish — guided by our clinicians.</p></div>
+        <div class="pillar rise"><i>iii.</i><h3>Take it home</h3><p>Leave with a finished, labelled bottle made by your own hand.</p></div>
       </div>
-      <a href="#register" class="btn" style="align-self:flex-start;white-space:nowrap;padding:18px 28px">Reserve my spot</a>
     </div>
   </section>
-  </main>
 
-  <footer style="margin-top:auto;border-top:1px solid var(--line);padding:28px clamp(20px,5vw,72px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted2);letter-spacing:.04em">
-    <span>© 2026 Renellence</span>
-    <span>Make Your Own HA — Vic Park Medispa Convention</span>
-  </footer>
-</div>
+  <section class="steps">
+    <div class="wrap">
+      <div class="steps-head">
+        <div class="rise"><span class="kicker">How it works</span><h2>Three <em>easy</em> steps.</h2></div>
+        <a href="#register" class="btn rise">Reserve my seat<svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></a>
+      </div>
+      <div class="step-grid">
+        <div class="step rise"><span class="num">01</span><h3>Reserve your seat</h3><p>Pick your clinic and role above. Seats are limited per session.</p></div>
+        <div class="step rise"><span class="num">02</span><h3>Get your time slot</h3><p>We'll email a time and where to find the Renellence booth at the convention.</p></div>
+        <div class="step rise"><span class="num">03</span><h3>Mix &amp; take home</h3><p>Stop by the bar, make your HA, and leave with your bottle.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <img src="/assets/logo-ink.png" alt="Renellence" width="1400" height="194">
+    <span>Make Your Own HA · Vic Park Medispa Convention · © 2026</span>
+  </div>
+</footer>
 
 <script>
 (function () {
   // Where a registration goes: n8n writes it to the "Vic Park HA Lab Registrations" Google Sheet.
   var HOOK = 'https://renellence.app.n8n.cloud/webhook/vic-park-ha-lab';
-  var LOCATIONS = [
-    { id: 'aylmer', name: 'Aylmer', address: '28 Rue Principale', phone: '819.557.3027' },
-    { id: 'barrie', name: 'Barrie', address: '93 Bell Farm Rd', phone: '705.739.0721' },
-    { id: 'bromont', name: 'Bromont', address: '910 Shefford Street', phone: '450.534.4554' },
-    { id: 'cobourg', name: 'Cobourg', address: '1176 Division Street', phone: '289.252.1586' },
-    { id: 'chambly', name: 'Dermanaissance – Chambly', address: '1269 Av. Bourgogne', phone: '579.787.0707' },
-    { id: 'granby', name: 'Dermanaissance – Granby', address: '1042 Rue Principale', phone: '579.787.0707' },
-    { id: 'levis', name: 'Dermanaissance – Lévis', address: '1500 Rue Métivier', phone: '579.787.0707' }
-  ];
+  // Every Vic Park location (Yousef 2026-10-13), by province.
+  var CLINICS = [
+    ['Alberta', 'mahogany', 'PHI Medical Aesthetics – Mahogany, Calgary', '152 Mahogany Centre SE', '587.391.5750'],
+    ['Alberta', 'marda-loop', 'PHI Medical Aesthetics – Marda Loop, Calgary', '3332 20 St SW #306', '403.930.8677'],
+    ['Manitoba', 'winnipeg-grant', 'Winnipeg Grant', '1385 Grant Avenue', '204.474.1221'],
+    ['Manitoba', 'winnipeg-grosvenor', 'Winnipeg Grosvenor', '932 Grosvenor Ave', '204.957.7242'],
+    ['Ontario', 'barrie', 'Barrie', '93 Bell Farm Rd', '705.739.0721'],
+    ['Ontario', 'cobourg', 'Cobourg', '1176 Division Street', '289.252.1586'],
+    ['Ontario', 'kanata', 'Kanata', '737 Silver Seven Rd #9', '613.599.1314'],
+    ['Ontario', 'midland', 'Midland', '847 Vindin Street', '705.526.0721'],
+    ['Ontario', 'ottawa', 'Ottawa', '1600 Carling Avenue #650', '613.722.4436'],
+    ['Ontario', 'peterborough', 'Peterborough', '775 Monaghan Road South', '705.775.3223'],
+    ['Ontario', 'toronto-bay', 'Toronto Bay', '483 Bay St. #104', '647.812.0332'],
+    ['Ontario', 'toronto-refine', 'Toronto Refine', '131 Avenue Rd #200', '647.344.4777'],
+    ['Québec', 'aylmer', 'Aylmer', '28 Rue Principale', '819.557.3027'],
+    ['Québec', 'bromont', 'Bromont', '910 Shefford Street', '450.534.4554'],
+    ['Québec', 'chambly', 'Dermanaissance – Chambly', '1269 Av. Bourgogne', '579.787.0707'],
+    ['Québec', 'granby', 'Dermanaissance – Granby', '1042 Rue Principale', '579.787.0707'],
+    ['Québec', 'levis', 'Dermanaissance – Lévis', '1500 Rue Métivier', '579.787.0707'],
+    ['Québec', 'downtown-montreal', 'Downtown Montreal', '2105 rue de la Montagne', '514.488.8668'],
+    ['Québec', 'gatineau', 'Gatineau', '200 rue Montcalm #302', '819.778.3188'],
+    ['Québec', 'laval', 'Laval', '1428 Blvd. Saint-Martin O', '450.668.4812'],
+    ['Québec', 'longueuil', 'Longueuil', '300, rue Longueuil', '450.646.7268'],
+    ['Québec', 'montreal-east', 'Montreal East', '7275 Sherbrooke East, Suite 325', '514.645.6453'],
+    ['Québec', 'mount-royal', 'Mount Royal', '3333 Boul Graham #333', '514.488.8668'],
+    ['Québec', 'old-montreal', 'Old Montreal', '781 rue William, suite 500', '514.654.1445'],
+    ['Québec', 'pointe-claire', 'Pointe-Claire', '6500 De la Triade St #500 (Corner St. Jean)', '514.360.0457'],
+    ['Québec', 'quebec-reflet', 'Quebec Reflet', '655, Boul. Pierre-Bertrand, # 200', '418.527.1659'],
+    ['Québec', 'sainte-foy', 'Quebec Sainte-Foy', '3075 Chemin des Quatre-Bourgeois, #303', '418.780.2372'],
+    ['Québec', 'trois-rivieres', 'Trois-Rivières', '836 rue des Ursulines', '819.489.0523'],
+    ['Québec', 'visabelle', 'Visabelle Med', '3943 Boul. Saint-Jean, #120', '514.675.9911'],
+    ['Québec', 'westmount', 'Westmount', '376 Victoria Avenue #400', '514.488.8668']
+  ].map(function (c) { return { prov: c[0], id: c[1], name: c[2], address: c[3], phone: c[4] }; });
   var ROLES = ['Doctor', 'Nurse', 'Aesthetician', 'Staff'];
   var $ = function (id) { return document.getElementById(id); };
-  var started = Date.now(), role = '';
+  var started = Date.now(), role = '', clinic = null, active = -1, shown = [];
+  var fold = function (s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
 
-  var sel = $('location');
-  LOCATIONS.forEach(function (l) { var o = document.createElement('option'); o.value = l.id; o.textContent = l.name; sel.appendChild(o); });
-  var loc = function () { return LOCATIONS.filter(function (l) { return l.id === sel.value; })[0] || null; };
-  sel.addEventListener('change', function () { var l = loc(); $('locInfo').textContent = l ? l.address + ' · ' + l.phone : ''; $('err-location').textContent = ''; });
+  // ---- clinic picker: a searchable list, grouped by province ----
+  var combo = $('combo'), btn = $('comboBtn'), pop = $('comboPop'), search = $('comboSearch'), list = $('comboList');
+  function render() {
+    var q = fold(search.value.trim());
+    shown = CLINICS.filter(function (c) { return !q || fold(c.name + ' ' + c.address + ' ' + c.prov).indexOf(q) > -1; });
+    var html = '', prov = '';
+    shown.forEach(function (c, i) {
+      if (c.prov !== prov) { prov = c.prov; html += '<li class="grp" role="presentation">' + prov + '</li>'; }
+      html += '<li role="option" id="opt-' + c.id + '" data-i="' + i + '" aria-selected="' + (clinic === c) + '"' + (i === active ? ' class="active"' : '') + '><b></b><small></small></li>';
+    });
+    list.innerHTML = html || '<li class="none" role="presentation">No clinic matches that search.</li>';
+    shown.forEach(function (c) { var li = $('opt-' + c.id); li.querySelector('b').textContent = c.name; li.querySelector('small').textContent = c.address + ' · ' + c.phone; });
+    search.setAttribute('aria-activedescendant', active > -1 && shown[active] ? 'opt-' + shown[active].id : '');
+  }
+  function open() { pop.hidden = false; combo.dataset.open = 'true'; btn.setAttribute('aria-expanded', 'true'); search.value = ''; active = clinic ? CLINICS.indexOf(clinic) : -1; render(); search.focus(); scrollActive(); }
+  function close(focusBtn) { pop.hidden = true; combo.dataset.open = 'false'; btn.setAttribute('aria-expanded', 'false'); if (focusBtn) btn.focus(); }
+  function choose(c) {
+    clinic = c; $('comboText').textContent = c.name; $('comboText').className = '';
+    $('picked').textContent = c.address + ' · ' + c.phone + ' · ' + c.prov; $('err-location').textContent = ''; close(true);
+  }
+  function scrollActive() { var el = active > -1 && shown[active] ? $('opt-' + shown[active].id) : null; if (el) el.scrollIntoView({ block: 'nearest' }); }
+  btn.addEventListener('click', function () { pop.hidden ? open() : close(true); });
+  btn.addEventListener('keydown', function (e) { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); } });
+  search.addEventListener('input', function () { active = 0; render(); });
+  search.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(shown.length - 1, active + 1); render(); scrollActive(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(0, active - 1); render(); scrollActive(); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (shown[active]) choose(shown[active]); }
+    else if (e.key === 'Escape') { e.preventDefault(); close(true); }
+    else if (e.key === 'Tab') close(false);
+  });
+  list.addEventListener('mousedown', function (e) { var li = e.target.closest('[role="option"]'); if (li) { e.preventDefault(); choose(shown[Number(li.dataset.i)]); } });
+  document.addEventListener('mousedown', function (e) { if (!pop.hidden && !combo.contains(e.target)) close(false); });
 
+  // ---- role ----
   var roles = $('roles');
-  ROLES.forEach(function (r) {
+  ROLES.forEach(function (r, i) {
     var b = document.createElement('button');
-    b.type = 'button'; b.className = 'role'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.role = r;
-    b.innerHTML = '<span class="dot"><i></i></span>'; b.appendChild(document.createTextNode(r));
+    b.type = 'button'; b.className = 'role'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.role = r; b.tabIndex = i ? -1 : 0; b.textContent = r;
     b.addEventListener('click', function () { pick(r); });
     roles.appendChild(b);
   });
   function pick(r) {
     role = r;
-    Array.prototype.forEach.call(roles.children, function (b) { var on = b.dataset.role === r; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1; });
-    $('err-role').textContent = '';
+    Array.prototype.forEach.call(roles.children, function (b, i) { var on = b.dataset.role === r; b.setAttribute('aria-checked', on ? 'true' : 'false'); b.tabIndex = on || (!r && !i) ? 0 : -1; });
+    if (r) $('err-role').textContent = '';
   }
-  // Arrow keys move between roles, as in any radio group.
   roles.addEventListener('keydown', function (e) {
-    var i = ROLES.indexOf(role), d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+    var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
     if (!d) return;
-    e.preventDefault(); var n = ROLES[(i + d + ROLES.length) % ROLES.length]; pick(n);
-    roles.querySelector('[data-role="' + n + '"]').focus();
+    e.preventDefault(); var n = ROLES[(ROLES.indexOf(role) + d + ROLES.length) % ROLES.length]; pick(n); roles.querySelector('[data-role="' + n + '"]').focus();
   });
   ['first', 'last', 'email', 'phone'].forEach(function (k) { $(k).addEventListener('input', function () { $('err-' + k).textContent = ''; }); });
 
+  // ---- send ----
   $('form').addEventListener('submit', function (e) {
     e.preventDefault();
     var v = { first: $('first').value.trim(), last: $('last').value.trim(), email: $('email').value.trim(), phone: $('phone').value.trim() };
     var er = {};
-    if (!loc()) er.location = 'Please choose a location.';
+    if (!clinic) er.location = 'Please choose your clinic.';
     if (!role) er.role = 'Please choose your role.';
     if (!v.first) er.first = 'Required.';
     if (!v.last) er.last = 'Required.';
@@ -242,25 +389,32 @@
     if (v.phone.replace(/\D/g, '').length < 10) er.phone = 'Enter a 10-digit number.';
     ['location', 'role', 'first', 'last', 'email', 'phone'].forEach(function (k) { $('err-' + k).textContent = er[k] || ''; });
     $('err-form').textContent = '';
-    if (Object.keys(er).length) { var f = document.querySelector('.err:not(:empty)'); if (f) f.parentNode.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
-    var l = loc(), btn = $('submit');
-    btn.disabled = true; btn.textContent = 'Reserving…';
+    if (Object.keys(er).length) { var f = document.querySelector('#form .err:not(:empty)'); if (f) f.parentNode.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    var sb = $('submit');
+    sb.disabled = true; $('submitText').textContent = 'Reserving…';
     fetch(HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ location: l.name, location_id: l.id, location_address: l.address, role: role, first: v.first, last: v.last, email: v.email, phone: v.phone,
+      body: JSON.stringify({ location: clinic.name, location_id: clinic.id, location_address: clinic.address + ', ' + clinic.prov, role: role, first: v.first, last: v.last, email: v.email, phone: v.phone,
         company_website: $('company_website').value, elapsed_ms: Date.now() - started, page: location.href }) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || j.ok === false) throw new Error(j.error || 'failed'); }); })
       .then(function () {
-        $('doneFirst').textContent = v.first; $('doneLoc').textContent = l.name; $('doneEmail').textContent = v.email;
-        $('form').hidden = true; $('done').hidden = false; $('done').style.display = 'flex';
+        $('doneFirst').textContent = v.first; $('doneLoc').textContent = clinic.name; $('doneEmail').textContent = v.email;
+        $('formWrap').hidden = true; $('done').hidden = false; $('register').scrollIntoView({ block: 'start', behavior: 'smooth' });
       })
-      .catch(function () { $('err-form').textContent = 'Sorry, your spot could not be saved just now. Please try again in a moment.'; })
-      .then(function () { btn.disabled = false; btn.textContent = 'Reserve my spot'; });
+      .catch(function () { $('err-form').textContent = 'Sorry, your seat could not be saved just now. Please try again in a moment.'; })
+      .then(function () { sb.disabled = false; $('submitText').textContent = 'Reserve my seat'; });
+  });
+  $('again').addEventListener('click', function () {
+    $('form').reset(); pick(''); clinic = null; $('comboText').textContent = 'Select your clinic'; $('comboText').className = 'ph'; $('picked').textContent = '';
+    started = Date.now(); $('done').hidden = true; $('formWrap').hidden = false; $('first').focus();
   });
 
-  $('again').addEventListener('click', function () {
-    $('form').reset(); role = ''; pick(''); $('locInfo').textContent = ''; started = Date.now();
-    $('done').hidden = true; $('done').style.display = 'none'; $('form').hidden = false; $('first').focus();
-  });
+  // ---- gentle entrance ----
+  var els = document.querySelectorAll('.rise');
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { els.forEach(function (el) { el.classList.add('in'); }); }
+  else {
+    var io = new IntersectionObserver(function (entries) { entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: .12 });
+    els.forEach(function (el, i) { el.style.transitionDelay = (Math.min(i, 4) * 80) + 'ms'; io.observe(el); });
+  }
 })();
 </script>
 </body>
