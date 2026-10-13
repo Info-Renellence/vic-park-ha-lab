@@ -9,4 +9,4 @@
   info@renellence.com if a row cannot be saved. The webhook only accepts requests from this site's address.
 - Bots are screened the same way as the launch RSVP: a hidden "company website" field and a minimum time to fill in.
 
-Deployed on Vercel (project `vic-park-ha-lab`).
+Code: https://github.com/Info-Renellence/vic-park-ha-lab. Vercel project `vic-park-ha-lab` deploys every push to `main` to https://vic-park-ha-lab.vercel.app.
