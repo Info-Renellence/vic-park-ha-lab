@@ -1,6 +1,6 @@
 # Vic Park HA Lab
 
-"Make Your Own HA" sign-up page for Renellence at the Vic Park Medispa Convention.
+"Make Your Own HA" booth form for Renellence at the Vic Park Medispa Convention.
 
 - `index.html` — the whole site (plain HTML/CSS/JS, no build step), rebuilt from the Claude Design file
   `Make Your Own HA.dc.html` with the same layout, wording and colours.

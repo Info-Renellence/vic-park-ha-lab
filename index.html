@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Make Your Own HA · Renellence at the Vic Park Medispa Convention</title>
-<meta name="description" content="Step away from the convention floor for fifteen minutes and mix a hyaluronic serum to your own recipe with the Renellence team. Limited seats.">
+<title>Make Your Own HA · Renellence</title>
+<meta name="description" content="Renellence at the Vic Park Medispa Convention: a few quick details before you make your own hyaluronic serum at our booth.">
 <meta name="theme-color" content="#f6f1ea">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <!--
-  Vic Park HA Lab - "Make Your Own HA" sign-up page (Yousef 2026-10-13). Redesigned the same day ("make it more
-  premium"); the words are the Claude Design file's. Every Vic Park location is listed (30, by province).
+  Vic Park HA Lab - "Make Your Own HA" booth form (Yousef 2026-10-13; 2026-10-14: "just a form ... they are at the
+  booth and before they do it they do the quick form" - no sign-up or seat wording, no extra sections). Every Vic
+  Park location is listed (30, by province). After a submit it goes back to a blank form for the next person.
   The form posts to n8n ("[REG] Liberty Grand RSVP", webhook vic-park-ha-lab), which writes a row to the Google
   Sheet "Vic Park HA Lab Registrations". The webhook only accepts this site's address.
 -->
@@ -42,8 +43,6 @@
   .bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:30px;padding-bottom:30px}
   .bar img{height:15px;width:auto}
   .bar .event{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
-  .bar a.cta{font-size:11px;letter-spacing:.24em;text-transform:uppercase;padding:12px 20px;border:1px solid var(--line-2);transition:all .35s var(--ease)}
-  .bar a.cta:hover{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
   @media (max-width:820px){ .bar .event{display:none} }
 
   /* hero */
@@ -60,12 +59,15 @@
   .hero h1 em{font-style:italic;font-weight:300;color:var(--bronze)}
   .hero h1 .ha{display:inline-block;margin-left:.04em}
   .lede{margin:0;max-width:470px;font-size:17px;line-height:1.75;color:var(--body);font-weight:300}
-  .facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:0;margin-top:6px;border-top:1px solid var(--line)}
-  .facts div{padding:22px 34px 0 0;margin-right:34px;border-right:1px solid var(--line)}
-  .facts div:last-child{border-right:0;margin-right:0}
-  .facts b{display:block;font-family:var(--serif);font-weight:400;font-size:32px;line-height:1;letter-spacing:-.01em}
-  .facts span{display:block;margin-top:8px;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
-  @media (max-width:520px){ .facts div{padding-right:18px;margin-right:18px} .facts b{font-size:26px} }
+  /* the drawing */
+  .visual{max-width:440px;margin-top:6px}
+  .visual svg{width:100%;height:auto;overflow:visible}
+  .drip{animation:drip 4.8s var(--ease) infinite}
+  .drip.d2{animation-delay:1.4s}.drip.d3{animation-delay:2.6s}
+  @keyframes drip{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+  @media (max-width:960px){ .visual{max-width:300px} }
+  @media (max-width:600px){ .visual{display:none} }
+  @media (prefers-reduced-motion:reduce){ .drip{animation:none} }
 
   /* the card */
   .card{position:relative;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);
@@ -115,7 +117,6 @@
   .btn svg{width:18px;height:10px}
   .btn:hover{background:var(--bronze);gap:20px}
   .btn[disabled]{opacity:.6;cursor:wait}
-  .fine{margin:-12px 0 0;font-size:11.5px;color:var(--muted);font-weight:300;text-align:center}
   .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 
   /* done */
@@ -127,35 +128,6 @@
   .done h2 em{color:var(--bronze)}
   .done p{margin:0;max-width:360px;font-size:15px;line-height:1.7;color:var(--body);font-weight:300}
   .link{background:none;border:0;padding:0 0 4px;font:inherit;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--bronze);border-bottom:1px solid currentColor;cursor:pointer}
-
-  /* dark ritual band */
-  .ritual{position:relative;background:var(--ink);color:#efe5da;padding:clamp(90px,11vw,170px) 0;overflow:hidden}
-  .ritual::before{content:"";position:absolute;width:900px;aspect-ratio:1;left:-300px;top:-420px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,140,.16),transparent 65%)}
-  .ritual-head{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:end}
-  @media (max-width:860px){ .ritual-head{grid-template-columns:1fr} }
-  .ritual h2{margin:0;font-family:var(--serif);font-weight:300;font-size:clamp(46px,6vw,88px);line-height:.95;letter-spacing:-.02em}
-  .ritual h2 em{font-style:italic;color:var(--champagne)}
-  .ritual-head p{margin:0;font-size:16px;line-height:1.8;color:#bfb0a3;font-weight:300;max-width:420px}
-  .pillars{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(60px,8vw,110px);border-top:1px solid rgba(239,229,218,.14)}
-  @media (max-width:860px){ .pillars{grid-template-columns:1fr} }
-  .pillar{padding:40px 36px 10px 0;margin-right:36px;border-right:1px solid rgba(239,229,218,.14)}
-  .pillar:last-child{border-right:0}
-  @media (max-width:860px){ .pillar{border-right:0;border-bottom:1px solid rgba(239,229,218,.14);padding:32px 0;margin-right:0} .pillar:last-child{border-bottom:0} }
-  .pillar i{display:block;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--champagne);margin-bottom:20px}
-  .pillar h3{margin:0 0 12px;font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.005em}
-  .pillar p{margin:0;font-size:15px;line-height:1.75;color:#bfb0a3;font-weight:300}
-
-  /* steps */
-  .steps{padding:clamp(90px,11vw,170px) 0}
-  .steps-head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
-  .steps h2{margin:14px 0 0;font-family:var(--serif);font-weight:300;font-size:clamp(46px,6vw,88px);line-height:.95;letter-spacing:-.02em}
-  .steps h2 em{font-style:italic;color:var(--bronze)}
-  .step-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,60px);margin-top:clamp(56px,7vw,96px)}
-  @media (max-width:860px){ .step-grid{grid-template-columns:1fr} }
-  .step{border-top:1px solid var(--ink);padding-top:28px}
-  .step .num{font-family:var(--serif);font-style:italic;font-weight:300;font-size:64px;line-height:.8;color:var(--champagne)}
-  .step h3{margin:26px 0 12px;font-size:15px;font-weight:600;letter-spacing:.04em}
-  .step p{margin:0;font-size:15px;line-height:1.75;color:var(--body);font-weight:300}
 
   footer{border-top:1px solid var(--line)}
   .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-top:34px;padding-bottom:34px;font-size:11px;letter-spacing:.14em;color:var(--muted)}
@@ -172,7 +144,6 @@
   <div class="wrap bar">
     <img src="/assets/logo-ink.png" alt="Renellence" width="1400" height="194">
     <span class="event">Vic Park Medispa Convention</span>
-    <a href="#register" class="cta">Reserve a seat</a>
   </div>
 </header>
 
@@ -183,18 +154,37 @@
       <div class="hero-copy">
         <span class="kicker rise">Renellence at the Vic Park Medispa Convention</span>
         <h1 class="rise">Make your<br><em>own</em> <span class="ha">HA.</span></h1>
-        <p class="lede rise">Step away from the convention floor for fifteen minutes. Pull up a stool, mix a hyaluronic serum to your own recipe, and take it home — with the Renellence team beside you.</p>
-        <div class="facts rise">
-          <div><b>15 min</b><span>Per session</span></div>
-          <div><b>Yours</b><span>To take home</span></div>
-          <div><b>Limited</b><span>Seats per session</span></div>
+        <p class="lede rise">Before you start mixing, tell us a little about you. Then pull up a stool and make a hyaluronic serum to your own recipe, with the Renellence team beside you.</p>
+        <!-- A dropper bottle and falling drops, drawn here (no photo). -->
+        <div class="visual rise" aria-hidden="true">
+          <svg viewBox="0 0 420 300" fill="none">
+            <defs>
+              <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9ddd0"/><stop offset=".45" stop-color="#fffaf4"/><stop offset="1" stop-color="#dcc7b4"/></linearGradient>
+              <linearGradient id="serum" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7d3c1" stop-opacity=".55"/><stop offset="1" stop-color="#c9a98c" stop-opacity=".85"/></linearGradient>
+              <radialGradient id="drop" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#efe2d4"/><stop offset="1" stop-color="#c9a98c"/></radialGradient>
+            </defs>
+            <ellipse cx="150" cy="282" rx="96" ry="10" fill="#9a6b4f" opacity=".12"/>
+            <rect x="122" y="18" width="56" height="34" rx="10" fill="#231a15"/>
+            <rect x="136" y="52" width="28" height="22" fill="#3a2e27"/>
+            <path d="M100 96c0-14 12-22 26-22h48c14 0 26 8 26 22v164c0 13-10 22-22 22h-56c-12 0-22-9-22-22z" fill="url(#glass)" stroke="#c9a98c" stroke-width="1.2"/>
+            <path d="M104 170h92v90c0 11-8 18-18 18h-56c-10 0-18-7-18-18z" fill="url(#serum)"/>
+            <rect x="114" y="112" width="8" height="132" rx="4" fill="#fff" opacity=".7"/>
+            <rect x="128" y="196" width="44" height="46" fill="#f6f1ea" opacity=".9"/>
+            <text x="150" y="216" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="13" fill="#231a15">HA</text>
+            <text x="150" y="232" text-anchor="middle" font-family="Manrope,sans-serif" font-size="5.5" letter-spacing="1.6" fill="#9a6b4f">YOUR RECIPE</text>
+            <g class="drip"><path d="M300 70c0 0-16 22-16 33a16 16 0 0032 0c0-11-16-33-16-33z" fill="url(#drop)"/></g>
+            <g class="drip d2"><path d="M350 150c0 0-11 15-11 23a11 11 0 0022 0c0-8-11-23-11-23z" fill="url(#drop)" opacity=".85"/></g>
+            <g class="drip d3"><path d="M282 200c0 0-8 11-8 17a8 8 0 0016 0c0-6-8-17-8-17z" fill="url(#drop)" opacity=".7"/></g>
+            <circle cx="372" cy="250" r="26" stroke="#c9a98c" stroke-width="1" opacity=".5"/>
+            <circle cx="372" cy="250" r="12" fill="#c9a98c" opacity=".18"/>
+          </svg>
         </div>
       </div>
 
       <div class="card rise" id="register">
         <div id="formWrap">
-          <h2>Save your seat</h2>
-          <p class="sub">Takes under a minute. We'll email your time slot.</p>
+          <h2>Before you begin</h2>
+          <p class="sub">A few quick details. It takes under a minute.</p>
           <form id="form" novalidate>
             <div>
               <span class="lbl" id="clinicLbl">Your clinic location</span>
@@ -229,45 +219,16 @@
             <div class="hp" aria-hidden="true"><label>Company website <input id="company_website" tabindex="-1" autocomplete="off"></label></div>
 
             <span class="err" id="err-form" role="alert"></span>
-            <button type="submit" class="btn" id="submit"><span id="submitText">Reserve my seat</span><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
-            <p class="fine">Seats are limited per session.</p>
+            <button type="submit" class="btn" id="submit"><span id="submitText">Let’s make it</span><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
           </form>
         </div>
 
         <div class="done" id="done" hidden>
           <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-          <h2>See you there, <em id="doneFirst"></em>.</h2>
-          <p>Your seat is held under <span id="doneLoc"></span>. We'll send your time slot to <span id="doneEmail"></span>.</p>
-          <button type="button" class="link" id="again">Register someone else</button>
+          <h2>You're all set, <em id="doneFirst"></em>.</h2>
+          <p>Enjoy making your HA. The Renellence team will take it from here.</p>
+          <button type="button" class="link" id="again">Next person</button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="ritual">
-    <div class="wrap">
-      <div class="ritual-head">
-        <h2 class="rise">A small ritual<br>in a <em>busy</em> day.</h2>
-        <p class="rise">No slides, no sales pitch. Just a quiet table, good ingredients, and a few minutes to make something that's yours.</p>
-      </div>
-      <div class="pillars">
-        <div class="pillar rise"><i>i.</i><h3>Fifteen minutes</h3><p>Fits between sessions. Drop in, mix, and you're back on the floor.</p></div>
-        <div class="pillar rise"><i>ii.</i><h3>Your recipe</h3><p>Choose your base, weight and finish — guided by our clinicians.</p></div>
-        <div class="pillar rise"><i>iii.</i><h3>Take it home</h3><p>Leave with a finished, labelled bottle made by your own hand.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="steps">
-    <div class="wrap">
-      <div class="steps-head">
-        <div class="rise"><span class="kicker">How it works</span><h2>Three <em>easy</em> steps.</h2></div>
-        <a href="#register" class="btn rise">Reserve my seat<svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></a>
-      </div>
-      <div class="step-grid">
-        <div class="step rise"><span class="num">01</span><h3>Reserve your seat</h3><p>Pick your clinic and role above. Seats are limited per session.</p></div>
-        <div class="step rise"><span class="num">02</span><h3>Get your time slot</h3><p>We'll email a time and where to find the Renellence booth at the convention.</p></div>
-        <div class="step rise"><span class="num">03</span><h3>Mix &amp; take home</h3><p>Stop by the bar, make your HA, and leave with your bottle.</p></div>
       </div>
     </div>
   </section>
@@ -391,22 +352,26 @@
     $('err-form').textContent = '';
     if (Object.keys(er).length) { var f = document.querySelector('#form .err:not(:empty)'); if (f) f.parentNode.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     var sb = $('submit');
-    sb.disabled = true; $('submitText').textContent = 'Reserving…';
+    sb.disabled = true; $('submitText').textContent = 'One moment…';
     fetch(HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ location: clinic.name, location_id: clinic.id, location_address: clinic.address + ', ' + clinic.prov, role: role, first: v.first, last: v.last, email: v.email, phone: v.phone,
         company_website: $('company_website').value, elapsed_ms: Date.now() - started, page: location.href }) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || j.ok === false) throw new Error(j.error || 'failed'); }); })
       .then(function () {
-        $('doneFirst').textContent = v.first; $('doneLoc').textContent = clinic.name; $('doneEmail').textContent = v.email;
+        $('doneFirst').textContent = v.first;
         $('formWrap').hidden = true; $('done').hidden = false; $('register').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        // At the booth the next person is right behind: back to a blank form on its own after a few seconds.
+        clearTimeout(resetTimer); resetTimer = setTimeout(reset, 9000);
       })
-      .catch(function () { $('err-form').textContent = 'Sorry, your seat could not be saved just now. Please try again in a moment.'; })
-      .then(function () { sb.disabled = false; $('submitText').textContent = 'Reserve my seat'; });
+      .catch(function () { $('err-form').textContent = 'Sorry, that did not go through. Please try again in a moment.'; })
+      .then(function () { sb.disabled = false; $('submitText').textContent = 'Let’s make it'; });
   });
-  $('again').addEventListener('click', function () {
-    $('form').reset(); pick(''); clinic = null; $('comboText').textContent = 'Select your clinic'; $('comboText').className = 'ph'; $('picked').textContent = '';
-    started = Date.now(); $('done').hidden = true; $('formWrap').hidden = false; $('first').focus();
-  });
+  var resetTimer = 0;
+  function reset() {
+    clearTimeout(resetTimer); $('form').reset(); pick(''); clinic = null; $('comboText').textContent = 'Select your clinic'; $('comboText').className = 'ph'; $('picked').textContent = '';
+    started = Date.now(); $('done').hidden = true; $('formWrap').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  $('again').addEventListener('click', reset);
 
   // ---- gentle entrance ----
   var els = document.querySelectorAll('.rise');
