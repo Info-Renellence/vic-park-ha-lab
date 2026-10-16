@@ -44,6 +44,11 @@
   .bar img{height:15px;width:auto}
   .bar .event{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
   @media (max-width:820px){ .bar .event{display:none} }
+  .bar-r{display:flex;align-items:center;gap:22px}
+  .lang{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;padding:3px}
+  .lang button{font:inherit;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:0;background:transparent;color:var(--muted);padding:7px 12px;border-radius:999px;cursor:pointer;min-height:32px}
+  .lang button[aria-pressed="true"]{background:var(--ink);color:var(--ivory)}
+  .lang button:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 
   /* hero */
   .hero{position:relative;padding:clamp(28px,5vw,72px) 0 clamp(72px,9vw,140px)}
@@ -143,7 +148,13 @@
 <header>
   <div class="wrap bar">
     <img src="/assets/logo-ink.png" alt="Renellence" width="1400" height="194">
-    <span class="event">Vic Park Medispa Convention</span>
+    <div class="bar-r">
+      <span class="event" data-t="event">Vic Park Medispa Convention</span>
+      <div class="lang" role="group" aria-label="Language / Langue">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -152,9 +163,9 @@
     <span class="orb one" aria-hidden="true"></span><span class="ring" aria-hidden="true"></span><span class="orb two" aria-hidden="true"></span>
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="kicker rise">Renellence at the Vic Park Medispa Convention</span>
-        <h1 class="rise">Make your<br><em>own</em> <span class="ha">HA.</span></h1>
-        <p class="lede rise">Before you start mixing, tell us a little about you. Then pull up a stool and make a hyaluronic serum to your own recipe, with the Renellence team beside you.</p>
+        <span class="kicker rise" data-t="kicker">Renellence at the Vic Park Medispa Convention</span>
+        <h1 class="rise" data-th="h1">Make your<br><em>own</em> <span class="ha">HA.</span></h1>
+        <p class="lede rise" data-t="lede">Before you start mixing, tell us a little about you. Then make a hyaluronic serum to your own recipe, with the Renellence team beside you.</p>
         <!-- A dropper bottle and falling drops, drawn here (no photo). -->
         <div class="visual rise" aria-hidden="true">
           <svg viewBox="0 0 420 300" fill="none">
@@ -170,8 +181,8 @@
             <path d="M104 170h92v90c0 11-8 18-18 18h-56c-10 0-18-7-18-18z" fill="url(#serum)"/>
             <rect x="114" y="112" width="8" height="132" rx="4" fill="#fff" opacity=".7"/>
             <rect x="128" y="196" width="44" height="46" fill="#f6f1ea" opacity=".9"/>
-            <text x="150" y="216" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="13" fill="#231a15">HA</text>
-            <text x="150" y="232" text-anchor="middle" font-family="Manrope,sans-serif" font-size="5.5" letter-spacing="1.6" fill="#9a6b4f">YOUR RECIPE</text>
+            <text x="150" y="216" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-size="13" fill="#231a15" data-t="bottleHa">HA</text>
+            <text x="150" y="232" text-anchor="middle" font-family="Manrope,sans-serif" font-size="5.5" letter-spacing="1.6" fill="#9a6b4f" data-t="bottleRecipe">YOUR RECIPE</text>
             <g class="drip"><path d="M300 70c0 0-16 22-16 33a16 16 0 0032 0c0-11-16-33-16-33z" fill="url(#drop)"/></g>
             <g class="drip d2"><path d="M350 150c0 0-11 15-11 23a11 11 0 0022 0c0-8-11-23-11-23z" fill="url(#drop)" opacity=".85"/></g>
             <g class="drip d3"><path d="M282 200c0 0-8 11-8 17a8 8 0 0016 0c0-6-8-17-8-17z" fill="url(#drop)" opacity=".7"/></g>
@@ -183,18 +194,18 @@
 
       <div class="card rise" id="register">
         <div id="formWrap">
-          <h2>Before you begin</h2>
-          <p class="sub">A few quick details. It takes under a minute.</p>
+          <h2 data-t="begin">Before you begin</h2>
+          <p class="sub" data-t="sub">A few quick details. It takes under a minute.</p>
           <form id="form" novalidate>
             <div>
-              <span class="lbl" id="clinicLbl">Your clinic location</span>
+              <span class="lbl" id="clinicLbl" data-t="clinicLbl">Your clinic location</span>
               <div class="combo" id="combo" data-open="false">
                 <button type="button" class="combo-btn line" id="comboBtn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="clinicLbl comboBtn">
-                  <span id="comboText" class="ph">Select your clinic</span>
+                  <span id="comboText" class="ph" data-t="select">Select your clinic</span>
                   <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M2.5 5l4.5 4.5L11.5 5"/></svg>
                 </button>
                 <div class="combo-pop" id="comboPop" hidden>
-                  <input class="line combo-search" id="comboSearch" type="text" placeholder="Search by city or clinic" autocomplete="off" aria-label="Search clinics" aria-controls="comboList">
+                  <input class="line combo-search" id="comboSearch" type="text" placeholder="Search by city or clinic" autocomplete="off" aria-label="Search clinics" data-tp="search" data-ta="searchAria" aria-controls="comboList">
                   <ul class="combo-list" id="comboList" role="listbox" aria-labelledby="clinicLbl"></ul>
                 </div>
               </div>
@@ -203,31 +214,31 @@
             </div>
 
             <div>
-              <span class="lbl" id="roleLbl">Your role</span>
+              <span class="lbl" id="roleLbl" data-t="roleLbl">Your role</span>
               <div class="roles" role="radiogroup" aria-labelledby="roleLbl" id="roles"></div>
               <span class="err" id="err-role"></span>
             </div>
 
             <div class="row2">
-              <label><span class="lbl">First name</span><input id="first" class="line" autocomplete="given-name" maxlength="80"><span class="err" id="err-first"></span></label>
-              <label><span class="lbl">Last name</span><input id="last" class="line" autocomplete="family-name" maxlength="80"><span class="err" id="err-last"></span></label>
-              <label><span class="lbl">Email</span><input id="email" type="email" class="line" autocomplete="email" placeholder="you@clinic.com" maxlength="160"><span class="err" id="err-email"></span></label>
-              <label><span class="lbl">Phone</span><input id="phone" type="tel" class="line" autocomplete="tel" placeholder="555.555.5555" maxlength="30"><span class="err" id="err-phone"></span></label>
+              <label><span class="lbl" data-t="first">First name</span><input id="first" class="line" autocomplete="given-name" maxlength="80"><span class="err" id="err-first"></span></label>
+              <label><span class="lbl" data-t="last">Last name</span><input id="last" class="line" autocomplete="family-name" maxlength="80"><span class="err" id="err-last"></span></label>
+              <label><span class="lbl" data-t="email">Email</span><input id="email" type="email" class="line" autocomplete="email" placeholder="you@clinic.com" data-tp="emailPh" maxlength="160"><span class="err" id="err-email"></span></label>
+              <label><span class="lbl" data-t="phone">Phone</span><input id="phone" type="tel" class="line" autocomplete="tel" placeholder="555.555.5555" maxlength="30"><span class="err" id="err-phone"></span></label>
             </div>
 
             <!-- Left empty by people; bots fill it in. -->
             <div class="hp" aria-hidden="true"><label>Company website <input id="company_website" tabindex="-1" autocomplete="off"></label></div>
 
             <span class="err" id="err-form" role="alert"></span>
-            <button type="submit" class="btn" id="submit"><span id="submitText">Let’s make it</span><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+            <button type="submit" class="btn" id="submit"><span id="submitText" data-t="go">Let’s make it</span><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
           </form>
         </div>
 
         <div class="done" id="done" hidden>
           <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
-          <h2>You're all set, <em id="doneFirst"></em>.</h2>
-          <p>Enjoy making your HA. The Renellence team will take it from here.</p>
-          <button type="button" class="link" id="again">Next person</button>
+          <h2><span data-t="allSet">You're all set,</span> <em id="doneFirst"></em>.</h2>
+          <p data-t="enjoy">Enjoy making your HA. The Renellence team will take it from here.</p>
+          <button type="button" class="link" id="again" data-t="next">Next person</button>
         </div>
       </div>
     </div>
@@ -237,7 +248,7 @@
 <footer>
   <div class="wrap foot">
     <img src="/assets/logo-ink.png" alt="Renellence" width="1400" height="194">
-    <span>Make Your Own HA · Vic Park Medispa Convention · © 2026</span>
+    <span data-t="foot">Make Your Own HA · Vic Park Medispa Convention · © 2026</span>
   </div>
 </footer>
 
@@ -278,7 +289,51 @@
     ['Québec', 'visabelle', 'Visabelle Med', '3943 Boul. Saint-Jean, #120', '514.675.9911'],
     ['Québec', 'westmount', 'Westmount', '376 Victoria Avenue #400', '514.488.8668']
   ].map(function (c) { return { prov: c[0], id: c[1], name: c[2], address: c[3], phone: c[4] }; });
+  // Roles go to the sheet in English whatever the page language; only the button label changes.
   var ROLES = ['Doctor', 'Nurse', 'Aesthetician', 'Staff'];
+  // English and French (Yousef 2026-10-16). /fr (or ?lang=fr) opens in French; the EN | FR switch flips it.
+  var T = {
+    en: { title: 'Make Your Own HA · Renellence', event: 'Vic Park Medispa Convention', kicker: 'Renellence at the Vic Park Medispa Convention',
+      h1: 'Make your<br><em>own</em> <span class="ha">HA.</span>',
+      lede: 'Before you start mixing, tell us a little about you. Then make a hyaluronic serum to your own recipe, with the Renellence team beside you.',
+      bottleHa: 'HA', bottleRecipe: 'YOUR RECIPE', begin: 'Before you begin', sub: 'A few quick details. It takes under a minute.',
+      clinicLbl: 'Your clinic location', select: 'Select your clinic', search: 'Search by city or clinic', searchAria: 'Search clinics', none: 'No clinic matches that search.',
+      roleLbl: 'Your role', roles: { Doctor: 'Doctor', Nurse: 'Nurse', Aesthetician: 'Aesthetician', Staff: 'Staff' },
+      first: 'First name', last: 'Last name', email: 'Email', emailPh: 'you@clinic.com', phone: 'Phone', go: 'Let’s make it', wait: 'One moment…',
+      allSet: "You're all set,", enjoy: 'Enjoy making your HA. The Renellence team will take it from here.', next: 'Next person',
+      foot: 'Make Your Own HA · Vic Park Medispa Convention · © 2026',
+      eClinic: 'Please choose your clinic.', eRole: 'Please choose your role.', eReq: 'Required.', eEmail: 'Enter a valid email.', ePhone: 'Enter a 10-digit number.',
+      eSend: 'Sorry, that did not go through. Please try again in a moment.' },
+    fr: { title: 'Créez votre propre AH · Renellence', event: 'Congrès Medispa Vic Park', kicker: 'Renellence au Congrès Medispa Vic Park',
+      h1: 'Créez votre<br><em>propre</em> <span class="ha">AH.</span>',
+      lede: 'Avant de commencer le mélange, parlez-nous un peu de vous. Puis créez un sérum d’acide hyaluronique selon votre propre recette, avec l’équipe Renellence à vos côtés.',
+      bottleHa: 'AH', bottleRecipe: 'VOTRE RECETTE', begin: 'Avant de commencer', sub: 'Quelques détails rapides. Moins d’une minute.',
+      clinicLbl: 'Votre clinique', select: 'Choisissez votre clinique', search: 'Rechercher par ville ou clinique', searchAria: 'Rechercher une clinique', none: 'Aucune clinique ne correspond à cette recherche.',
+      roleLbl: 'Votre rôle', roles: { Doctor: 'Médecin', Nurse: 'Infirmier·ère', Aesthetician: 'Esthéticien·ne', Staff: 'Personnel' },
+      first: 'Prénom', last: 'Nom', email: 'Courriel', emailPh: 'vous@clinique.com', phone: 'Téléphone', go: 'C’est parti', wait: 'Un instant…',
+      allSet: 'C’est tout bon,', enjoy: 'Amusez-vous à créer votre AH. L’équipe Renellence prend le relais.', next: 'Personne suivante',
+      foot: 'Créez votre propre AH · Congrès Medispa Vic Park · © 2026',
+      eClinic: 'Veuillez choisir votre clinique.', eRole: 'Veuillez choisir votre rôle.', eReq: 'Obligatoire.', eEmail: 'Entrez un courriel valide.', ePhone: 'Entrez un numéro à 10 chiffres.',
+      eSend: 'Désolé, l’envoi n’a pas fonctionné. Réessayez dans un instant.' }
+  };
+  var lang = /^\/fr(\/|$)/.test(location.pathname) || /[?&]lang=fr\b/.test(location.search) ? 'fr' : 'en';
+  try { var saved = localStorage.getItem('vpLang'); if (saved === 'fr' || saved === 'en') lang = /^\/fr(\/|$)/.test(location.pathname) ? 'fr' : saved; } catch (e) {}
+  var t = function (k) { return T[lang][k]; };
+  function applyLang() {
+    document.documentElement.lang = lang === 'fr' ? 'fr-CA' : 'en';
+    document.title = t('title');
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+    document.querySelectorAll('[data-th]').forEach(function (el) { el.innerHTML = t(el.getAttribute('data-th')); });
+    document.querySelectorAll('[data-tp]').forEach(function (el) { el.placeholder = t(el.getAttribute('data-tp')); });
+    document.querySelectorAll('[data-ta]').forEach(function (el) { el.setAttribute('aria-label', t(el.getAttribute('data-ta'))); });
+    document.querySelectorAll('.lang [data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false'); });
+    if (typeof clinic !== 'undefined' && clinic) document.getElementById('comboText').textContent = clinic.name;
+    Array.prototype.forEach.call(document.getElementById('roles').children, function (b) { b.textContent = t('roles')[b.dataset.role]; });
+    ['location', 'role', 'first', 'last', 'email', 'phone', 'form'].forEach(function (k) { var e = document.getElementById('err-' + k); if (e) e.textContent = ''; });
+  }
+  document.querySelectorAll('.lang [data-lang]').forEach(function (b) {
+    b.addEventListener('click', function () { lang = b.getAttribute('data-lang'); try { localStorage.setItem('vpLang', lang); } catch (e) {} applyLang(); if (!pop.hidden) render(); });
+  });
   var $ = function (id) { return document.getElementById(id); };
   var started = Date.now(), role = '', clinic = null, active = -1, shown = [];
   var fold = function (s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
@@ -293,7 +348,7 @@
       if (c.prov !== prov) { prov = c.prov; html += '<li class="grp" role="presentation">' + prov + '</li>'; }
       html += '<li role="option" id="opt-' + c.id + '" data-i="' + i + '" aria-selected="' + (clinic === c) + '"' + (i === active ? ' class="active"' : '') + '><b></b><small></small></li>';
     });
-    list.innerHTML = html || '<li class="none" role="presentation">No clinic matches that search.</li>';
+    list.innerHTML = html || '<li class="none" role="presentation">' + t('none') + '</li>';
     shown.forEach(function (c) { var li = $('opt-' + c.id); li.querySelector('b').textContent = c.name; li.querySelector('small').textContent = c.address + ' · ' + c.phone; });
     search.setAttribute('aria-activedescendant', active > -1 && shown[active] ? 'opt-' + shown[active].id : '');
   }
@@ -321,7 +376,7 @@
   var roles = $('roles');
   ROLES.forEach(function (r, i) {
     var b = document.createElement('button');
-    b.type = 'button'; b.className = 'role'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.role = r; b.tabIndex = i ? -1 : 0; b.textContent = r;
+    b.type = 'button'; b.className = 'role'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.dataset.role = r; b.tabIndex = i ? -1 : 0; b.textContent = t('roles')[r];
     b.addEventListener('click', function () { pick(r); });
     roles.appendChild(b);
   });
@@ -342,19 +397,19 @@
     e.preventDefault();
     var v = { first: $('first').value.trim(), last: $('last').value.trim(), email: $('email').value.trim(), phone: $('phone').value.trim() };
     var er = {};
-    if (!clinic) er.location = 'Please choose your clinic.';
-    if (!role) er.role = 'Please choose your role.';
-    if (!v.first) er.first = 'Required.';
-    if (!v.last) er.last = 'Required.';
-    if (!/^\S+@\S+\.\S+$/.test(v.email)) er.email = 'Enter a valid email.';
-    if (v.phone.replace(/\D/g, '').length < 10) er.phone = 'Enter a 10-digit number.';
+    if (!clinic) er.location = t('eClinic');
+    if (!role) er.role = t('eRole');
+    if (!v.first) er.first = t('eReq');
+    if (!v.last) er.last = t('eReq');
+    if (!/^\S+@\S+\.\S+$/.test(v.email)) er.email = t('eEmail');
+    if (v.phone.replace(/\D/g, '').length < 10) er.phone = t('ePhone');
     ['location', 'role', 'first', 'last', 'email', 'phone'].forEach(function (k) { $('err-' + k).textContent = er[k] || ''; });
     $('err-form').textContent = '';
     if (Object.keys(er).length) { var f = document.querySelector('#form .err:not(:empty)'); if (f) f.parentNode.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     var sb = $('submit');
-    sb.disabled = true; $('submitText').textContent = 'One moment…';
+    sb.disabled = true; $('submitText').textContent = t('wait');
     fetch(HOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ location: clinic.name, location_id: clinic.id, location_address: clinic.address + ', ' + clinic.prov, role: role, first: v.first, last: v.last, email: v.email, phone: v.phone,
+      body: JSON.stringify({ location: clinic.name, location_id: clinic.id, location_address: clinic.address + ', ' + clinic.prov, role: role, lang: lang, first: v.first, last: v.last, email: v.email, phone: v.phone,
         company_website: $('company_website').value, elapsed_ms: Date.now() - started, page: location.href }) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || j.ok === false) throw new Error(j.error || 'failed'); }); })
       .then(function () {
@@ -363,15 +418,16 @@
         // At the booth the next person is right behind: back to a blank form on its own after a few seconds.
         clearTimeout(resetTimer); resetTimer = setTimeout(reset, 9000);
       })
-      .catch(function () { $('err-form').textContent = 'Sorry, that did not go through. Please try again in a moment.'; })
-      .then(function () { sb.disabled = false; $('submitText').textContent = 'Let’s make it'; });
+      .catch(function () { $('err-form').textContent = t('eSend'); })
+      .then(function () { sb.disabled = false; $('submitText').textContent = t('go'); });
   });
   var resetTimer = 0;
   function reset() {
-    clearTimeout(resetTimer); $('form').reset(); pick(''); clinic = null; $('comboText').textContent = 'Select your clinic'; $('comboText').className = 'ph'; $('picked').textContent = '';
+    clearTimeout(resetTimer); $('form').reset(); pick(''); clinic = null; $('comboText').textContent = t('select'); $('comboText').className = 'ph'; $('picked').textContent = '';
     started = Date.now(); $('done').hidden = true; $('formWrap').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   $('again').addEventListener('click', reset);
+  applyLang();
 
   // ---- gentle entrance ----
   var els = document.querySelectorAll('.rise');
