@@ -23,7 +23,7 @@
   "rewrites": [
     {
       "source": "/fr",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }
